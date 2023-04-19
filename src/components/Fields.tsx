@@ -72,6 +72,10 @@ export default function Fields({ fields=[] }: FieldsProps) {
     fields.splice(index, 1);
     update();
   }, [update]);
+
+  if (!fields || fields.length === 0) {
+    return <p>No data found.</p>;
+  }
   
   return (
     <>
