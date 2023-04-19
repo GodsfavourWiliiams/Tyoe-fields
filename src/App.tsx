@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import Fields from './components/Fields';
 
 
-interface InterfaceObject {
+interface Field {
   name: string;
   type: string;
   required: boolean;
-  properties?: InterfaceObject[];
+  properties?: Field[];
 }
 
-const interfaceObject: InterfaceObject[] = [
+const defaultFields: Field[] = [
   {
     name: "person",
     type: "object",
@@ -35,20 +35,24 @@ const interfaceObject: InterfaceObject[] = [
 ];
 
 function App(): JSX.Element {
-  const [data, setData] = useState<InterfaceObject[]>(interfaceObject);
+  const [fields, setFields] = useState<Field[]>(defaultFields);
   
-  const createField = (): InterfaceObject => ({
+  const createField = (): Field => ({
     name: "fieldName",
     required: false,
     type: "string",
   });
+
+  const handleAddField = () => {
+    setFields(prevFields => [...prevFields, createField()]);
+  };
  
   return (
     <div className="w-full max-w-lg text-center mx-auto">
       <div className="flex my-3 items-center justify-between">
         <h1 className='font-bold text-lg'>Type Fields</h1>
         <button 
-          onClick={() => { setData([...data, createField()]) }}
+          onClick={handleAddField}
           className="text-center p-2  rounded-md shadow hover:bg-indigo-50 transform duration-300 ease-in-out">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
             <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m3.75 9v6m3-3H9m1.5-12H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
@@ -56,15 +60,9 @@ function App(): JSX.Element {
         </button>
       </div>
       <div>
-        {
-          data.length > 0 ?
-          <Fields data={data} />
-          :
-          <>No data Found</>
-        }
-        
+      {fields.length > 0 ? <Fields fields={fields} /> : <>No data Found</>}
         <button
-          onClick={() => console.log({ data })}
+          onClick={() => console.log({ fields })}
           className="my-3 w-full text-base font-medium text-white text-center p-4 bg-indigo-700 rounded-md hover:bg-indigo-600 transform duration-300 ease-in-out">
             <span className='flex items-center justify-center gap-3'>
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
